@@ -39,6 +39,8 @@ pipeline {
                    ls -ltr
                 """      
             }
+        }    
+        stage('unzip') {   
              steps {
                 sh """
                    unzip zipFile: 'backend-${appVersion}.zip'
