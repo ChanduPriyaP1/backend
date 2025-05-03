@@ -9,7 +9,7 @@ pipeline {
         ansiColor('xterm')
     }
     environment { 
-      def appVersion = '' // Variable Declaration
+      #def appVersion = '' // Variable Declaration
     }
 
     stages {
@@ -25,9 +25,18 @@ pipeline {
             steps {
                 script {
                     def packageJson = readJSON file: 'package.json'
-                    env.appVersion = packageJson.version
+                    def appVersion = packageJson.version
                     echo "Application Version is : ${appVersion}"
                 }
+            }
+        }
+         stage('Build') {
+            steps {
+                sh """
+                   zip -r  backend-${appVersion}.zip * -x Jenkinafile -x backend-${appVersion}.zip
+                   ls -ltr
+                """
+                    
             }
         }
     }    
@@ -35,9 +44,20 @@ pipeline {
      post { 
         always { 
             echo 'I will always say Hello again!'
+            deleteDir() /* clean up our workspace */
         }
-        success { 
-            echo 'I will always say Hello again!'
+         success {
+            echo 'I succeeded!'
         }
+        unstable {
+            echo 'I am unstable :/'
+        }
+        failure {
+            echo 'I failed :('
+        }
+        changed {
+            echo 'Things were different before...'
+        }
+    
     }
 }
