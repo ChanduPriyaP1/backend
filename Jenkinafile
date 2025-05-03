@@ -13,14 +13,6 @@ pipeline {
     }
 
     stages {
-        stage('npm install') {
-            steps {
-                sh """
-                    npm install
-                    ls -ltr
-                """
-            }
-        }
         stage('Read Version') {
             steps {
                 script {
@@ -30,14 +22,27 @@ pipeline {
                 }
             }
         }
+        stage('npm install') {
+            steps {
+                sh """
+                    npm install
+                    ls -ltr
+                """
+            }
+        }
+        
         stage('Build') {
 
             steps {
-
                 sh """
                    zip -q -r backend-${appVersion}.zip * -x Jenkinafile -x backend-${appVersion}.zip
                    ls -ltr
-                   cat backend-${appVersion}.zip
+                """      
+            }
+             steps {
+                sh """
+                   unzip zipFile: 'backend-${appVersion}.zip'
+                   ls -ltr
                 """      
             }
         }
