@@ -38,6 +38,7 @@ pipeline {
                 sh """
                    zip -q -r backend-${appVersion}.zip * -x Jenkinafile -x backend-${appVersion}.zip
                    ls -ltr
+                   mv ~/
                 """      
             }
         }    
