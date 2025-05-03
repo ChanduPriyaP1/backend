@@ -9,7 +9,7 @@ pipeline {
         ansiColor('xterm')
     }
     environment { 
-      #def appVersion = '' // Variable Declaration
+      //def appVersion = '' // Variable Declaration
     }
 
     stages {
