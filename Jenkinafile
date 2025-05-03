@@ -26,7 +26,7 @@ pipeline {
                 script {
                     def packageJson = readJSON file: 'package.json'
                     def appVersion = packageJson.version
-                    echo "Application Version is : ${appVersion}"
+                    echo "Application Version is : $appVersion"
                 }
             }
         }
@@ -34,11 +34,11 @@ pipeline {
 
             steps {
 
-                script{
+                sh """
                    zip -q -r backend-${appVersion}.zip * -x Jenkinafile -x backend-${appVersion}.zip
 
                    ls -ltr
-                }
+                """
                     
             }
         }
