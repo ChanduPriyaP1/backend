@@ -9,7 +9,8 @@ pipeline {
         ansiColor('xterm')
     }
     environment { 
-      def appVersion = '' // Variable Declaration
+      def appVersion = "" // Variable Declaration
+      zipFile = "backend-${appVersion}.zip"
     }
 
     stages {
@@ -43,7 +44,7 @@ pipeline {
         stage('unzip') {   
              steps {
                 sh """
-                   unzip zipFile: 'backend-${appVersion}.zip'
+                   unzip "$zipFile"
                    ls -ltr
                 """      
             }
