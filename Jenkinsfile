@@ -10,7 +10,7 @@ pipeline {
     }
     environment { 
       def appVersion = "" // Variable Declaration
-      zipFile = "backend-${appVersion}.zip"
+      
     }
 
     stages {
@@ -44,6 +44,7 @@ pipeline {
         stage('unzip') {   
              steps {
                 sh """
+                   zipFile = "backend-${appVersion}.zip"
                    unzip "$zipFile"
                    ls -ltr
                 """      
