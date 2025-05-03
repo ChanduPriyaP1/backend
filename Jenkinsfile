@@ -8,18 +8,20 @@ pipeline {
         disableConcurrentBuilds()
         ansiColor('xterm')
     }
-    environment { 
-      def appVersion = "" // Variable Declaration
-      
+    environment{
+        def appVersion = '' //variable declaration
+        nexusUrl = 'nexus.daws78s.online:8081'
+        region = "us-east-1"
+        account_id = "315069654700"
     }
 
     stages {
-        stage('Read Version') {
-            steps {
-                script {
+        stage('read the version'){
+            steps{
+                script{
                     def packageJson = readJSON file: 'package.json'
                     appVersion = packageJson.version
-                    echo "Application Version is : $appVersion"
+                    echo "application version: $appVersion"
                 }
             }
         }
@@ -32,15 +34,14 @@ pipeline {
             }
         }
         
-        stage('Build') {
-
-            steps {
+        stage('Build'){
+            steps{
                 sh """
-                   zip -q -r backend-${appVersion}.zip * -x Jenkinafile -x backend-${appVersion}.zip
-                   ls -ltr
-                """      
+                zip -q -r backend-${appVersion}.zip * -x Jenkinsfile -x backend-${appVersion}.zip
+                ls -ltr
+                """
             }
-        }    
+        }  
         
     }    
 
