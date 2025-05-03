@@ -8,9 +8,9 @@ pipeline {
         disableConcurrentBuilds()
         ansiColor('xterm')
     }
-    environment { 
-      //def appVersion = '' // Variable Declaration
-    }
+    // environment { 
+    //   //def appVersion = '' // Variable Declaration
+    // }
 
     stages {
         stage('npm install') {
