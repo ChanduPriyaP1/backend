@@ -36,21 +36,12 @@ pipeline {
 
             steps {
                 sh """
-                   zip -q -r backend-${appVersion}.zip * -x Jenkinafile -x backend-${appVersion}.zip
+                   zip -q -r backend-${appVersion}.zip . -x Jenkinafile -x backend-${appVersion}.zip
                    ls -ltr
-                   mv backend-${appVersion}.zip ~/
                 """      
             }
         }    
-        stage('unzip') {   
-             steps {
-                sh """
-                   zipFile = "backend-${appVersion}.zip"
-                   unzip "$zipFile"
-                   ls -ltr
-                """      
-            }
-        }
+        
     }    
 
      post { 
