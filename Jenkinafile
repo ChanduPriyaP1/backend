@@ -30,8 +30,10 @@ pipeline {
                 }
             }
         }
-         stage('Build') {
+        stage('Build') {
+
             steps {
+
                 script{
                    zip -q -r backend-${appVersion}.zip * -x Jenkinafile -x backend-${appVersion}.zip
 
