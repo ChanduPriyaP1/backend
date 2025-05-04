@@ -27,6 +27,7 @@ pipeline {
         stage('npm install') {
             steps {
                 sh """
+                    echo "application version: $APPVERSION"
                     npm install
                     ls -ltr
                 """
