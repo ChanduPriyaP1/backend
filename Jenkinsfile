@@ -9,7 +9,7 @@ pipeline {
         ansiColor('xterm')
     }
     environment{
-        def appVersion = '' //variable declaration
+        def APPVERSION = '' //variable declaration
         //nexusUrl = 'nexus.daws78s.online:8081'
         //region = "us-east-1"
         //account_id = "315069654700"
@@ -19,8 +19,8 @@ pipeline {
             steps{
                 script{
                     def packageJson = readJSON file: 'package.json'
-                    appVersion = packageJson.version
-                    echo "application version: $appVersion"
+                    APPVERSION = packageJson.version
+                    echo "application version: $APPVERSION"
                 }
             }
         }
@@ -35,8 +35,8 @@ pipeline {
         stage('Build'){
             steps{
                 sh """
-                zip -q -r backend-${appVersion}.zip * -x Jenkinsfile -x backend-${appVersion}.zip
-                ls -ltr
+                    zip -q -r backend-${APPVERSION}.zip * -x Jenkinsfile -x backend-${APPVERSION}.zip
+                    ls -ltr
                 """
             }
         }
