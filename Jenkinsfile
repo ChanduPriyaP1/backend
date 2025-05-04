@@ -10,7 +10,7 @@ pipeline {
     }
     environment{
         def appVersion = '' //variable declaration
-        nexusUrl = 'nexus.sindu.cloud:8081'
+        //nexusUrl = 'nexus.sindu.cloud:8081'
         //region = "us-east-1"
         //account_id = "315069654700"
     }
@@ -40,27 +40,27 @@ pipeline {
                 """
             }
         }
-        stage('Nexus Artifact Uploader') {
-            steps {
-                script{
-                    nexusArtifactUploader(
-                        nexusVersion: 'nexus3',
-                        protocol: 'http',
-                        nexusUrl: "${nexusUrl}",
-                        groupId: 'com.expense',
-                        version: "${appVersion}",
-                        repository: "backend",
-                        credentialsId: 'nexus-auth',
-                        artifacts: [
-                            [artifactId: "backend",
-                                classifier: '',
-                                file: "backend-" + ${appVersion} + ".zip",
-                                type: 'zip']
-                        ]
-                    )
-                }
-            }
-        } 
+        // stage('Nexus Artifact Uploader') {
+        //     steps {
+        //         script{
+        //             nexusArtifactUploader(
+        //                 nexusVersion: 'nexus3',
+        //                 protocol: 'http',
+        //                 nexusUrl: "${nexusUrl}",
+        //                 groupId: 'com.expense',
+        //                 version: "${appVersion}",
+        //                 repository: "backend",
+        //                 credentialsId: 'nexus-auth',
+        //                 artifacts: [
+        //                     [artifactId: "backend",
+        //                         classifier: '',
+        //                         file: "backend-" + ${appVersion} + ".zip",
+        //                         type: 'zip']
+        //                 ]
+        //             )
+        //         }
+        //     }
+        // } 
         stage('Deploy'){
             
             steps{
