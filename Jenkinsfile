@@ -9,8 +9,8 @@ pipeline {
         ansiColor('xterm')
     }
     environment{
-        def APPVERSION = '' //variable declaration
-        //nexusUrl = 'nexus.daws78s.online:8081'
+        def appVersion = '' //variable declaration
+        nexusUrl = 'nexus.sindu.cloud:8081'
         //region = "us-east-1"
         //account_id = "315069654700"
     }
@@ -19,8 +19,8 @@ pipeline {
             steps{
                 script{
                     def packageJson = readJSON file: 'package.json'
-                    APPVERSION = packageJson.version
-                    echo "application version: $APPVERSION"
+                    appVersion = packageJson.version
+                    echo "application version: $appVersion"
                 }
             }
         }
@@ -35,16 +35,43 @@ pipeline {
         stage('Build'){
             steps{
                 sh """
-                    zip -q -r backend-${APPVERSION}.zip * -x Jenkinsfile -x backend-${APPVERSION}.zip
+                    zip -q -r backend-${appVersion}.zip * -x Jenkinsfile -x backend-${appVersion}.zip
                     ls -ltr
                 """
             }
         }
-        stage('Find ZIP Files') {
+        stage('Nexus Artifact Uploader') {
             steps {
-                sh 'find "$WORKSPACE" -name "*.zip"'
+                script{
+                    nexusArtifactUploader(
+                        nexusVersion: 'nexus3',
+                        protocol: 'http',
+                        nexusUrl: "${nexusUrl}",
+                        groupId: 'com.expense',
+                        version: "${appVersion}",
+                        repository: "backend",
+                        credentialsId: 'nexus-auth',
+                        artifacts: [
+                            [artifactId: "backend",
+                                classifier: '',
+                                file: "backend-" + ${appVersion} + ".zip",
+                                type: 'zip']
+                        ]
+                    )
+                }
             }
-        }  
+        } 
+        stage('Deploy'){
+            
+            steps{
+                script{
+                    def params = [
+                        string(name: 'appVersion', value: "${appVersion}")
+                    ]
+                    build job: 'backend-deploy', parameters: params, wait: false
+                }
+            }
+        } 
         
     }    
 
